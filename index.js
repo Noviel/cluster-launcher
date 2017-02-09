@@ -3,6 +3,9 @@ const cluster = require('cluster');
 
 const defaults = require('osnova-lib').core.defaults;
 
+const stickyListenWorker = require('./lib/listen-sticky/worker');
+const stickyListenMaster = require('./lib/listen-sticky/master');
+
 const stopSignals = [
         'SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT',
         'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM'
@@ -51,7 +54,7 @@ function launch(opts) {
       throw new Error('No master.main function was specified in options.');
     }
     if (typeof opts.master.listen !== 'function') {
-      throw new Error('No master.listen function was specified in options.');
+      opts.master.listen = stickyListenMaster;
     }
 
     const workerCount = threads;
@@ -95,14 +98,14 @@ function launch(opts) {
       throw new Error('No master.worker function was specified in options.');
     }
     if (typeof opts.worker.listen !== 'function') {
-      throw new Error('No worker.listen function was specified in options.');
+      opts.master.listen = stickyListenWorker;
     }
     opts.worker.main(opts.worker.listen);
   }
 }
 
 module.exports = {
-  launch: launch,
-  stickyListenWorker: require('./lib/listen-sticky/worker'),
-  stickyListenMaster: require('./lib/listen-sticky/master')
+  launch,
+  stickyListenWorker,
+  stickyListenMaster
 };
