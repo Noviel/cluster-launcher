@@ -53,9 +53,7 @@ function launch(opts) {
     if (typeof opts.master.main !== 'function') {
       throw new Error('No master.main function was specified in options.');
     }
-    if (typeof opts.master.listen !== 'function') {
-      opts.master.listen = stickyListenMaster;
-    }
+    opts.master.listen = opts.master.listen || stickyListenMaster;
 
     const workerCount = threads;
 
@@ -97,9 +95,7 @@ function launch(opts) {
     if (typeof opts.worker.main !== 'function') {
       throw new Error('No master.worker function was specified in options.');
     }
-    if (typeof opts.worker.listen !== 'function') {
-      opts.worker.listen = stickyListenWorker;
-    }
+    opts.worker.listen = opts.worker.listen || stickyListenWorker;
     opts.worker.main(opts.worker.listen);
   }
 }

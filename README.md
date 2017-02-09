@@ -28,6 +28,7 @@ const http = require('http').Server(app);
 
 // Worker/Master will be called by launch with specified
 // respectively listen function as a parameter.
+// It is entry points of an application.
 const workerFunc = (listen) => {
   // Some extern http server must be specified for a worker's listen.
   listen(http);
@@ -46,6 +47,7 @@ launch(
     main: workerFunc,
     // callback
     // signature: [http server object] => null
+    // default: stickListenWorker
     listen: stickyListenWorker
   },
   master: {
@@ -54,6 +56,7 @@ launch(
     main: masterFunc,
     // callback
     // signature: [{ ip, port, workers, workerCount }] => null
+    // default: stickListenMaster
     listen: stickyListenMaster
   },
   config: {
