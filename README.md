@@ -1,5 +1,9 @@
 # Cluster multiprocess launcher
 
+## bI
+
+Simple configurable launcher for Node.js based on cluster. Includes built-in sticky listeners.
+
 ## Install
 
 `npm i osnova-cluster-launcher --save`
@@ -34,14 +38,23 @@ const masterFunc = (listen) => {
 
 launch(
   worker: {
+    // callback
+    // signature: [listen function] => null
     main: workerFunc,
+    // callback
+    // signature: [http server object] => null
     listen: stickyListenWorker
   },
   master: {
+    // callback
+    // signature: [listen function] => null
     main: masterFunc,
+    // callback
+    // signature: [{ ip, port, workers, workerCount }] => null
     listen: stickyListenMaster
   },
   config: {
+    // count of worker processes to spawn
     threads: 4,
     host: {
       ip: 'localhost',
@@ -53,8 +66,6 @@ launch(
 
 ## API
 
-### .launch
-
-### .stickyListenWorker
-
-### .stickyListenMaster
+### .launch (opts)
+### .stickyListenWorker (http)
+### .stickyListenMaster (opts)
