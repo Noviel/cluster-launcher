@@ -13,7 +13,7 @@ const production = process.env.NODE_ENV === 'production';
 const spawn = (workers, i) => {
   workers[i] = cluster.fork();
   workers[i].on('exit', function (code, signal) {
-    console.log('respawning worker', i);
+    console.log('Respawning worker', i);
     spawn(workers, i);
   });
 };
@@ -46,8 +46,14 @@ function launch(opts) {
     }
   });
 
-
   if (cluster.isMaster) {
+    if (typeof opts.master.main !== 'function') {
+      throw new Error('No master.main function was specified in options.');
+    }
+    if (typeof opts.master.listen !== 'function') {
+      throw new Error('No master.listen function was specified in options.');
+    }
+
     const workerCount = threads;
 
     console.log(`Starting ${workerCount} workers...`);
@@ -57,7 +63,7 @@ function launch(opts) {
     }
 
     cluster.on('exit', (worker, code, signal) => {
-      console.log(`worker ${worker.process.pid} died`);
+      console.log(`Worker ${worker.process.pid} died`);
     });
 
     if (production) {
@@ -74,15 +80,23 @@ function launch(opts) {
         });
       });
     }
-    
-    opts.master.main((http) => {
-      if (typeof opts.master.listen === 'function') {
-        opts.master.listen({ip, port, workers, workerCount});
-      }
+
+    // Worker and master must call `listen` by themselves,
+    // because they can contain some async init functions.
+    //
+    // For master we just wrapping listen by another function
+    // with parameters in the closure.
+    opts.master.main(() => {
+      opts.master.listen({ip, port, workers, workerCount});
     });
+
   } else {
-    // worker should execute listen function by itself,
-    // because it can contain some async initializing stuff
+    if (typeof opts.worker.main !== 'function') {
+      throw new Error('No master.worker function was specified in options.');
+    }
+    if (typeof opts.worker.listen !== 'function') {
+      throw new Error('No worker.listen function was specified in options.');
+    }
     opts.worker.main(opts.worker.listen);
   }
 }

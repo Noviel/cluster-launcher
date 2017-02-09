@@ -22,17 +22,20 @@ const {
   stickyListenMaster
 } = require('osnova-cluster-launcher');
 
+// Use express for example
+const app = require('express')();
+const http = require('http').Server(app);
+
 // Worker/Master will be called by launch with specified
 // respectively listen function as a parameter.
 const workerFunc = (listen) => {
-  const http = getHttpServerFromSomewhere();
-  // Some extern http server must be specified for a worker.
+  // Some extern http server must be specified for a worker's listen.
   listen(http);
 };
 
 const masterFunc = (listen) => {
-  JustSomeMasterStuff();
-  // Master listen need no extern http server, it will create his own.
+  console.log('We are doing some crazy master stuff here!');
+  // Master's listen need no extern http server, it will create his own.
   listen();
 }
 
