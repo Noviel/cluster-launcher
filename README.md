@@ -1,6 +1,6 @@
 # Cluster multiprocess launcher
 
-## bI
+## bI?
 
 Simple configurable launcher for Node.js based on cluster. Includes built-in sticky listeners.
 
