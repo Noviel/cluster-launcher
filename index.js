@@ -98,7 +98,7 @@ function launch(opts) {
       throw new Error('No master.worker function was specified in options.');
     }
     if (typeof opts.worker.listen !== 'function') {
-      opts.master.listen = stickyListenWorker;
+      opts.worker.listen = stickyListenWorker;
     }
     opts.worker.main(opts.worker.listen);
   }
