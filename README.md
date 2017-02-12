@@ -22,7 +22,9 @@ const workerFunc = (listen) => {
   const app = require('express')();
   const http = require('http').Server(app);
 
-  app.get('*', (req, res) => { res.send(`Hello from worker pid:${process.pid}`); });
+  app.get('*', (req, res) => { 
+    res.send(`Hello from worker pid:${process.pid}`); 
+  });
   listen(http);
 };
 
