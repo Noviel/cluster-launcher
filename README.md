@@ -48,7 +48,7 @@ launch({
     main: workerFunc,
     // callback
     // signature: [http server object] => null
-    // default: stickListenWorker
+    // default: stickyListenWorker
     listen: stickyListenWorker
   },
   master: {
@@ -57,7 +57,7 @@ launch({
     main: masterFunc,
     // callback
     // signature: [{ ip, port, workers, workerCount }] => null
-    // default: stickListenMaster
+    // default: stickyListenMaster
     listen: stickyListenMaster
   },
   config: {

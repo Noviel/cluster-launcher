@@ -1,6 +1,6 @@
 {
   "name": "osnova-cluster-launcher",
-  "version": "1.10.2",
+  "version": "1.10.3",
   "description": "Configurable cluster master/workers launcher with built-in sticky listen server.",
   "main": "index.js",
   "scripts": {
