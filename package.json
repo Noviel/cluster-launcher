@@ -1,6 +1,6 @@
 {
   "name": "osnova-cluster-launcher",
-  "version": "1.10.3",
+  "version": "1.11.1",
   "description": "Configurable cluster master/workers launcher with built-in sticky listen server.",
   "main": "index.js",
   "scripts": {
@@ -10,9 +10,9 @@
     "osnova",
     "cluster"
   ],
-  "author": "Aleksandr snov Noviel <snov.contact@gmail.com>",
+  "author": "Aleksandr Snov <snov.contact@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "osnova-lib": "^1.1.0"
+    "osnova-lib": "^1.1.4"
   }
 }

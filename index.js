@@ -1,7 +1,6 @@
 const util = require('util');
 const cluster = require('cluster');
-
-const defaults = require('osnova-lib').core.defaults;
+const defaults = require('osnova-lib').defaults;
 
 const stickyListenWorker = require('./lib/listen-sticky/worker');
 const stickyListenMaster = require('./lib/listen-sticky/master');
@@ -51,7 +50,7 @@ function launch(opts) {
 
   if (cluster.isMaster) {
     if (typeof opts.master.main !== 'function') {
-      throw new Error('No master.main function was specified in options.');
+      throw new Error('No master.main function was specified.');
     }
     opts.master.listen = opts.master.listen || stickyListenMaster;
 
@@ -82,18 +81,13 @@ function launch(opts) {
       });
     }
 
-    // Worker and master must call `listen` by themselves,
-    // because they can contain some async init functions.
-    //
-    // For master we just wrapping listen by another function
-    // with parameters in the closure.
     opts.master.main(() => {
-      opts.master.listen({ip, port, workers, workerCount});
+      opts.master.listen({ip, port, workers});
     });
 
   } else {
     if (typeof opts.worker.main !== 'function') {
-      throw new Error('No master.worker function was specified in options.');
+      throw new Error('No master.worker function was specified.');
     }
     opts.worker.listen = opts.worker.listen || stickyListenWorker;
     opts.worker.main(opts.worker.listen);

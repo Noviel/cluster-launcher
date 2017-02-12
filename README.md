@@ -12,21 +12,12 @@ Simple configurable launcher for Node.js based on cluster. Includes built-in sti
 
 ```javascript
 const {
-  // Entry point
   launch,
-  // Default built-in listen functions for worker and master,
-  // that provide sticky connection for the client to specific
-  // worker based on the client's ip address.
-  // Usefull for Socket.IO
   stickyListenWorker,
   stickyListenMaster
 } = require('osnova-cluster-launcher');
 
-// Worker/Master will be called by launch with specified
-// respectively listen function as a parameter.
-// It is entry points of an application.
 const workerFunc = (listen) => {
-  // Some extern http server must be specified for a worker's listen.
   // Use express for example.
   const app = require('express')();
   const http = require('http').Server(app);
@@ -37,31 +28,19 @@ const workerFunc = (listen) => {
 
 const masterFunc = (listen) => {
   console.log('We are doing some crazy master stuff here!');
-  // Master's listen need no extern http server, it will create his own.
   listen();
 };
 
 launch({
   worker: {
-    // callback
-    // signature: [listen function] => null
     main: workerFunc,
-    // callback
-    // signature: [http server object] => null
-    // default: stickyListenWorker
     listen: stickyListenWorker
   },
   master: {
-    // callback
-    // signature: [listen function] => null
     main: masterFunc,
-    // callback
-    // signature: [{ ip, port, workers, workerCount }] => null
-    // default: stickyListenMaster
     listen: stickyListenMaster
   },
   config: {
-    // count of worker processes to spawn
     threads: 4,
     host: {
       ip: 'localhost',
@@ -73,6 +52,36 @@ launch({
 
 ## API
 
-### .launch (opts)
-### .stickyListenWorker (http)
-### .stickyListenMaster (opts)
+### .launch(opts)
+@param opts { object } options object  
+
+Expected that master and worker will call `listen` by themselves, because they can contain some async init functions.
+
+##### Options object
+- **config** { object }  
+  - **threads** { number } count of worker processes to spawn. `default: 1`
+  - **host** { object } web server configuration
+    - **ip** { string } `default: 'localhost'`
+    - **port** { number } `default: 8080`
+- **worker**
+  - **main** { function } entry point of the every worker, takes `listen` as a parameter
+  - **listen** { function } `default: stickyListenWorker`
+- **master**
+  - **main** { function } entry point of the master
+  - **listen** { function } `default: stickyListenMaster`
+
+`worker`/`master`'s `main` will be called with specified to them listen function as a parameter.
+
+##### Worker's listen
+Expects `http` server object as a parameter.
+
+##### Master's listen 
+Will be wrapped in function that takes no arguments. Because of it in the master's `main` you should just do `listen()`. But inside it will be called by `launch` with options object as a parameter:
+- **ip** { string }
+- **port** { number }
+- **workers** { array }
+
+
+### .stickyListenWorker, .stickyListenMaster
+Default built-in listen function for worker, that provide sticky connection for the client to 
+specific worker based on the client's ip address. Usefull for Socket.IO.
