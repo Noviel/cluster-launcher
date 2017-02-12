@@ -30,8 +30,8 @@ const workerFunc = (listen) => {
   // Use express for example.
   const app = require('express')();
   const http = require('http').Server(app);
-  
-  app.get('*', (req, res) => { res.send('Hello, u can see me.'); });
+
+  app.get('*', (req, res) => { res.send(`Hello from worker pid:${process.pid}`); });
   listen(http);
 };
 
