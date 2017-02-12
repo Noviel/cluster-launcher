@@ -78,7 +78,7 @@ Expected that master and worker will call `listen` by themselves, because they c
 Expects `http` server object as a parameter.
 
 ##### Master's listen 
-Will be wrapped in function that takes no arguments. Because of it in the master's `main` you should just do `listen()`. But inside it will be called by `launch` with options object as a parameter:
+Will be wrapped in a function that takes no arguments. Because of it in the master's `main` you should just do `listen()`. But inside it will be called by `launch` with options object as a parameter:
 - **ip** { string }
 - **port** { number }
 - **workers** { array }
