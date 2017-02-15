@@ -1,11 +1,13 @@
 {
   "name": "cluster-launcher",
-  "version": "1.11.16",
+  "version": "1.11.17",
   "description": "Configurable master/workers launcher for Node.js with built-in sticky listen server",
   "keywords": [
     "launcher",
     "cluster",
-    "server"
+    "server",
+    "sticky",
+    "Socket.IO"
   ],
   "author": "Aleksandr Snov <snov.contact@gmail.com>",
   "license": "MIT",
