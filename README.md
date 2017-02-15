@@ -2,7 +2,7 @@
 
 ## bI?
 
-Simple configurable launcher for Node.js based on cluster. Includes built-in sticky listeners.
+Minimalistic configurable multiprocess launcher for Node.js based on cluster. Includes built-in sticky listeners for Socket.IO.
 
 ## Installation
 
