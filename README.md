@@ -15,7 +15,7 @@ const {
   launch,
   stickyListenWorker,
   stickyListenMaster
-} = require('osnova-cluster-launcher');
+} = require('cluster-launcher');
 
 const workerFunc = (listen) => {
   // Use express for example.
