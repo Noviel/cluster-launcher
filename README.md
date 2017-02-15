@@ -4,9 +4,9 @@
 
 Simple configurable launcher for Node.js based on cluster. Includes built-in sticky listeners.
 
-## Install
+## Installation
 
-`npm i osnova-cluster-launcher --save`
+`npm i cluster-launcher --save`
 
 ## Usage
 
